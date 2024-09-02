@@ -42,7 +42,6 @@ function IssueForm({ issue }: { issue?: Issue }) {
       }
       router.push("/issues");
       router.refresh();
-      console.log(data);
     } catch (error) {
       setIssubmitting(false);
       setError("Unexpected error occurred!!!");
