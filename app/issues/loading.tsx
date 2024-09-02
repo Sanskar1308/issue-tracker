@@ -25,7 +25,7 @@ function LoadingIssuesPage() {
           {issues.map((issue) => (
             <Table.Row key={issue}>
               <Table.Cell>
-                <SkeletonLoading />
+                <SkeletonLoading height="10" width="full" />
                 <div className="block md:hidden mt-2">
                   <SkeletonLoading />
                 </div>

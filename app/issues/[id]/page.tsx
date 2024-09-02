@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import IssueStatusBadge from "@/app/components/issueStatusBadge";
 import ReactMarkdown from "react-markdown";
+import delay from "delay";
 
 interface Props {
   params: { id: string };
@@ -15,6 +16,8 @@ async function IssueDetails({ params }: Props) {
   });
 
   if (!issue) notFound();
+
+  await delay(2000);
 
   return (
     <div>
