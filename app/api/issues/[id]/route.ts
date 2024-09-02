@@ -22,9 +22,15 @@ export async function PATCH(
     return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
   }
 
+  console.log(body);
+
   const updatedIssue = await prisma.issue.update({
     where: { id: issue.id },
-    data: { title: body.title, description: body.description },
+    data: {
+      title: body.title,
+      description: body.description,
+      status: body.status,
+    },
   });
 
   return NextResponse.json(updatedIssue);

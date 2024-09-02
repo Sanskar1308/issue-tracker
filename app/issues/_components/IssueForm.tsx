@@ -4,7 +4,7 @@ import { ErrorMessage, Spinner } from "@/app/components";
 import { IssueSchema } from "@/app/validationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Issue } from "@prisma/client";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Button, Callout, DropdownMenu, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
@@ -42,9 +42,10 @@ function IssueForm({ issue }: { issue?: Issue }) {
       }
       router.push("/issues");
       router.refresh();
+      console.log(data);
     } catch (error) {
       setIssubmitting(false);
-      setError("Unexpected error occured!!!");
+      setError("Unexpected error occurred!!!");
     }
   });
 
@@ -62,6 +63,7 @@ function IssueForm({ issue }: { issue?: Issue }) {
           defaultValue={issue?.title}
         ></TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
         <Controller
           name="description"
           control={control}
@@ -71,6 +73,36 @@ function IssueForm({ issue }: { issue?: Issue }) {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
+
+        {issue && (
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <Button variant="soft">
+                    {"Select Status"}
+                    <DropdownMenu.TriggerIcon />
+                  </Button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item onSelect={() => field.onChange("OPEN")}>
+                    Open
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item
+                    onSelect={() => field.onChange("IN_PROGRESS")}
+                  >
+                    In Progress
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item onSelect={() => field.onChange("CLOSED")}>
+                    Closed
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            )}
+          />
+        )}
         <Button disabled={issubmitting}>
           {issue ? "Update Issue" : "Submit New Issue"}{" "}
           {issubmitting && <Spinner />}
