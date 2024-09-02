@@ -43,4 +43,5 @@ async function issues() {
   );
 }
 
+export const dynamic = "force-dynamic";
 export default issues;
