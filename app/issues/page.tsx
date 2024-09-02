@@ -8,6 +8,7 @@ import Link from "../components/Link";
 
 async function issues() {
   const issues = await prisma.issue.findMany();
+  await delay(2000);
   return (
     <div>
       <IssueAction />
