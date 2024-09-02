@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import React from "react";
-import { Im500Px } from "react-icons/im";
-import { usePathname } from "next/navigation";
 import classNames from "classnames";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Im500Px } from "react-icons/im";
 
 function Navbar() {
   const currentPath = usePathname();

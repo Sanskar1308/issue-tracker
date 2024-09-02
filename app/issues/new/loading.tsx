@@ -1,9 +1,5 @@
-import ErrorMessage from "@/app/components/ErrorMessage";
-import SkeletonLoading from "@/app/components/SkeletonLoading";
-import { Callout, TextField, Button, Spinner } from "@radix-ui/themes";
-import { register } from "module";
-import React from "react";
-import { Controller } from "react-hook-form";
+import { SkeletonLoading } from "@/app/components";
+import { Button } from "@radix-ui/themes";
 
 const LoadingNewIssue = () => {
   return (
