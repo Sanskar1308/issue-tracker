@@ -1,6 +1,6 @@
 import { Box, Card } from "@radix-ui/themes";
 import React from "react";
-import SkeletonLoading from "@/app/components/SkeletonLoading";
+import { SkeletonLoading } from "@/app/components";
 
 const LoadingIssuesDetails = () => {
   return (
