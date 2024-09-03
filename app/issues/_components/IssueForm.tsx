@@ -7,12 +7,12 @@ import { Issue } from "@prisma/client";
 import { Button, Callout, DropdownMenu, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import dynamic from "next/dynamic";
-import { MdOutlineDeleteOutline } from "react-icons/md";
+import IssueDelete from "../[id]/issueDelete";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -32,7 +32,6 @@ function IssueForm({ issue }: { issue?: Issue }) {
   });
   const [error, setError] = useState("");
   const [issubmitting, setIssubmitting] = useState(false);
-  const [issubmittingDelete, setIssubmittingDelete] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -49,18 +48,6 @@ function IssueForm({ issue }: { issue?: Issue }) {
       setError("Unexpected error occurred!!!");
     }
   });
-
-  const handleDelete = async () => {
-    try {
-      setIssubmittingDelete(true);
-      await axios.delete("/api/issues/" + issue!.id);
-      router.push("/issues");
-      router.refresh();
-    } catch (error) {
-      setIssubmittingDelete(false);
-      setError("Unexpected error occurred!!!");
-    }
-  };
 
   return (
     <div className="max-w-xl">
@@ -122,16 +109,7 @@ function IssueForm({ issue }: { issue?: Issue }) {
           {issubmitting && <Spinner />}
         </Button>
       </form>
-      {issue && (
-        <Button
-          color="red"
-          onClick={handleDelete}
-          disabled={issubmittingDelete}
-        >
-          <MdOutlineDeleteOutline />
-          Delete {issubmittingDelete && <Spinner />}
-        </Button>
-      )}
+      {issue && <IssueDelete issueId={issue.id} />}
     </div>
   );
 }
