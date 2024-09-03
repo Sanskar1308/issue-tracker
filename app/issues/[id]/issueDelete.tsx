@@ -8,6 +8,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 
 const IssueDelete = async ({ issueId }: { issueId: number }) => {
   const [issubmittingDelete, setIssubmittingDelete] = useState(false);
+  const [error, setError] = useState(false);
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -18,40 +19,54 @@ const IssueDelete = async ({ issueId }: { issueId: number }) => {
       router.refresh();
     } catch (error) {
       setIssubmittingDelete(false);
+      setError(true);
     }
   };
   return (
-    <AlertDialog.Root>
-      <AlertDialog.Trigger>
-        <Button color="red">
-          <MdOutlineDeleteOutline />
-          Delete
-        </Button>
-      </AlertDialog.Trigger>
-      <AlertDialog.Content>
-        <AlertDialog.Title>Confirm Delete</AlertDialog.Title>
-        <AlertDialog.Description>
-          Are you sure you want to delete this issue? This action can't be
-          undone.
-        </AlertDialog.Description>
-        <Flex mt="5" gap="2">
-          <AlertDialog.Cancel>
-            <Button variant="soft" color="gray">
-              Cancel
-            </Button>
-          </AlertDialog.Cancel>
-          <AlertDialog.Action>
-            <Button
-              color="red"
-              onClick={handleDelete}
-              disabled={issubmittingDelete}
-            >
-              Delete Issue {issubmittingDelete && <Spinner />}
-            </Button>
-          </AlertDialog.Action>
-        </Flex>
-      </AlertDialog.Content>
-    </AlertDialog.Root>
+    <>
+      <AlertDialog.Root>
+        <AlertDialog.Trigger>
+          <Button color="red">
+            <MdOutlineDeleteOutline />
+            Delete
+          </Button>
+        </AlertDialog.Trigger>
+        <AlertDialog.Content>
+          <AlertDialog.Title>Confirm Delete</AlertDialog.Title>
+          <AlertDialog.Description>
+            Are you sure you want to delete this issue? This action can't be
+            undone.
+          </AlertDialog.Description>
+          <Flex mt="5" gap="2">
+            <AlertDialog.Cancel>
+              <Button variant="soft" color="gray">
+                Cancel
+              </Button>
+            </AlertDialog.Cancel>
+            <AlertDialog.Action>
+              <Button
+                color="red"
+                onClick={handleDelete}
+                disabled={issubmittingDelete}
+              >
+                Delete Issue {issubmittingDelete && <Spinner />}
+              </Button>
+            </AlertDialog.Action>
+          </Flex>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
+      <AlertDialog.Root open={error}>
+        <AlertDialog.Content>
+          <AlertDialog.Title>Error</AlertDialog.Title>
+          <AlertDialog.Description>
+            This issue can't be deleted.
+          </AlertDialog.Description>
+          <Button mt="4" onClick={() => setError(false)}>
+            OK
+          </Button>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
+    </>
   );
 };
 
