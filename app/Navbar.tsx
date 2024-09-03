@@ -1,6 +1,13 @@
 "use client";
 
-import { Avatar, Box, Container, DropdownMenu, Flex } from "@radix-ui/themes";
+import {
+  Avatar,
+  Box,
+  Container,
+  DropdownMenu,
+  Flex,
+  Spinner,
+} from "@radix-ui/themes";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -53,7 +60,7 @@ const NavLinks = () => {
 const AuthDetails = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") return <Spinner />;
 
   if (status === "unauthenticated")
     return (
