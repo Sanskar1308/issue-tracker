@@ -26,9 +26,9 @@ const IssueDelete = async ({ issueId }: { issueId: number }) => {
     <>
       <AlertDialog.Root>
         <AlertDialog.Trigger>
-          <Button color="red">
+          <Button color="red" disabled={issubmittingDelete}>
             <MdOutlineDeleteOutline />
-            Delete
+            Delete {issubmittingDelete && <Spinner />}
           </Button>
         </AlertDialog.Trigger>
         <AlertDialog.Content>
@@ -49,7 +49,7 @@ const IssueDelete = async ({ issueId }: { issueId: number }) => {
                 onClick={handleDelete}
                 disabled={issubmittingDelete}
               >
-                Delete Issue {issubmittingDelete && <Spinner />}
+                Delete Issue
               </Button>
             </AlertDialog.Action>
           </Flex>
