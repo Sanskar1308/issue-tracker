@@ -1,6 +1,5 @@
-import React from "react";
-import IssueForm from "../_components/IssueForm";
 import { Metadata } from "next";
+import IssueForm from "../_components/IssueForm";
 
 const NewIssuepage = () => {
   return (

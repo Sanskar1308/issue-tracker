@@ -1,5 +1,3 @@
-import React from "react";
-
 function SkeletonLoading({
   width = "full",
   height = "10",

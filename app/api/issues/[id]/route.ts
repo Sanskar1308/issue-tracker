@@ -1,6 +1,5 @@
 import { patchIssueSchema } from "@/app/validationSchema";
 import prisma from "@/prisma/client";
-import { error } from "console";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import OAuthOptions from "../../auth/[...nextauth]/OAuthOption";
