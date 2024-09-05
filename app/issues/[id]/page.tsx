@@ -7,6 +7,8 @@ import IssueDelete from "./issueDelete";
 import { getServerSession } from "next-auth";
 import OAuthOptions from "@/app/api/auth/[...nextauth]/OAuthOption";
 import AssigneeSelect from "./AssigneeSelect";
+import { Prisma } from "@prisma/client";
+import { title } from "process";
 
 interface Props {
   params: { id: string };
@@ -36,6 +38,17 @@ async function IssueDetailsPage({ params }: Props) {
       )}
     </Grid>
   );
+}
+
+export async function generateMetadata({ params }: Props) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  return {
+    title: issue?.title,
+    description: `Description of issue - ${issue?.description}`,
+  };
 }
 
 export default IssueDetailsPage;

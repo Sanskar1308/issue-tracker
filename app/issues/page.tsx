@@ -7,6 +7,7 @@ import NextLink from "next/link";
 import { FaArrowUp } from "react-icons/fa";
 import Pagination from "./Pagination";
 import IssueTable, { columnNames, IssueQuery } from "./IssueTable";
+import { Metadata } from "next";
 
 interface Props {
   searchParams: IssueQuery;
@@ -47,6 +48,11 @@ async function issues({ searchParams }: Props) {
     </Flex>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Issue tracker- Issues Details",
+  description: "View all project issues",
+};
 
 export const dynamic = "force-dynamic";
 export default issues;
