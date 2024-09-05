@@ -1,12 +1,4 @@
 import prisma from "@/prisma/client";
-<<<<<<< HEAD
-import { Status } from "@prisma/client";
-import { Flex } from "@radix-ui/themes";
-import { Metadata } from "next";
-import IssueAction from "./IssueAction";
-import IssueTable, { columnNames, IssueQuery } from "./IssueTable";
-import Pagination from "./Pagination";
-=======
 import { Flex, Table } from "@radix-ui/themes";
 import { IssueStatusBadge, Link } from "@/app/components";
 import IssueAction from "./IssueAction";
@@ -15,7 +7,7 @@ import NextLink from "next/link";
 import { FaArrowUp } from "react-icons/fa";
 import Pagination from "./Pagination";
 import IssueTable, { columnNames, IssueQuery } from "./IssueTable";
->>>>>>> origin/master
+import { Metadata } from "next";
 
 interface Props {
   searchParams: IssueQuery;
@@ -57,13 +49,10 @@ async function issues({ searchParams }: Props) {
   );
 }
 
-<<<<<<< HEAD
 export const metadata: Metadata = {
   title: "Issue tracker- Issues Details",
   description: "View all project issues",
 };
 
-=======
->>>>>>> origin/master
 export const dynamic = "force-dynamic";
 export default issues;
