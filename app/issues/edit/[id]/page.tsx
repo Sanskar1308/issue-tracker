@@ -7,12 +7,12 @@ interface Props {
   params: { id: string };
 }
 
-const fetchUser = cache((issueId: number) =>
+const fetchUser = cache((issueId: string) =>
   prisma.issue.findUnique({ where: { id: issueId } })
 );
 
 const EditIssuePage = async ({ params }: Props) => {
-  const issue = await fetchUser(parseInt(params.id));
+  const issue = await fetchUser(params.id);
 
   if (!issue) notFound();
 
@@ -24,7 +24,7 @@ const EditIssuePage = async ({ params }: Props) => {
 };
 
 export async function generateMetadata({ params }: Props) {
-  const issue = await fetchUser(parseInt(params.id));
+  const issue = await fetchUser(params.id);
   return {
     title: "Issue tracker- Edit Issue",
     description: `Edit ${issue?.title} issue`,
