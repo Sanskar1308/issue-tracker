@@ -6,7 +6,7 @@ import OAuthOptions from "../../auth/[...nextauth]/OAuthOption";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } } // id should be a string
 ) {
   // const session = await getServerSession(OAuthOptions);
   // if (!session) return NextResponse.json({}, { status: 401 });
@@ -21,28 +21,31 @@ export async function PATCH(
 
   const { assignedToUserId, title, description, status } = body;
 
+  // Validate assignedToUserId if provided
   if (assignedToUserId) {
     const user = await prisma.user.findUnique({
-      where: { id: assignedToUserId },
+      where: { id: assignedToUserId }, // id is an ObjectId as a string
     });
     if (!user) {
       return NextResponse.json(
-        { error: "user doesn't exist" },
+        { error: "User doesn't exist" },
         { status: 400 }
       );
     }
   }
 
+  // Find the issue by ID (which is a string)
   const issue = await prisma.issue.findUnique({
-    where: { id: params.id },
+    where: { id: params.id }, // Prisma expects a string for ObjectId
   });
 
   if (!issue) {
-    return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
+    return NextResponse.json({ error: "Issue not found" }, { status: 404 });
   }
 
+  // Update the issue
   const updatedIssue = await prisma.issue.update({
-    where: { id: issue.id },
+    where: { id: issue.id }, // Use the existing string ObjectId
     data: {
       title,
       description,
@@ -54,21 +57,27 @@ export async function PATCH(
   return NextResponse.json(updatedIssue);
 }
 
+// DELETE handler for deleting an issue
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } } // id should be a string
 ) {
   const session = await getServerSession(OAuthOptions);
   if (!session) return NextResponse.json({}, { status: 401 });
+
+  // Find the issue by ID (which is a string)
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: params.id }, // Prisma expects a string for ObjectId
   });
 
   if (!issue) {
     return NextResponse.json({ error: "Issue not found" }, { status: 404 });
   }
 
-  const deletedIssue = await prisma.issue.delete({ where: { id: issue.id } });
+  // Delete the issue
+  const deletedIssue = await prisma.issue.delete({
+    where: { id: issue.id }, // id is a string (ObjectId)
+  });
 
   return NextResponse.json({
     message: `Successfully deleted issue with id - ${deletedIssue.id}`,
