@@ -6,7 +6,7 @@ import OAuthOptions from "../../auth/[...nextauth]/OAuthOption";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: number } }
 ) {
   // const session = await getServerSession(OAuthOptions);
   // if (!session) return NextResponse.json({}, { status: 401 });
@@ -34,7 +34,7 @@ export async function PATCH(
   }
 
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: params.id },
   });
 
   if (!issue) {
