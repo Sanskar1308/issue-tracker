@@ -6,7 +6,7 @@ import OAuthOptions from "../../auth/[...nextauth]/OAuthOption";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } } // id should be a string
+  { params }: { params: { id: string }; res: NextResponse } // id should be a string
 ) {
   // const session = await getServerSession(OAuthOptions);
   // if (!session) return NextResponse.json({}, { status: 401 });
@@ -54,7 +54,11 @@ export async function PATCH(
     },
   });
 
-  return NextResponse.json(updatedIssue);
+  const response = NextResponse.json(updatedIssue);
+
+  response.headers.set("Cache-Control", "no-store");
+
+  return response;
 }
 
 // DELETE handler for deleting an issue
@@ -79,7 +83,11 @@ export async function DELETE(
     where: { id: issue.id }, // id is a string (ObjectId)
   });
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     message: `Successfully deleted issue with id - ${deletedIssue.id}`,
   });
+
+  response.headers.set("Cache-Control", "no-store");
+
+  return response;
 }
