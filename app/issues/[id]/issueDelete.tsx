@@ -34,8 +34,8 @@ const IssueDelete = async ({ issueId }: { issueId: number }) => {
         <AlertDialog.Content>
           <AlertDialog.Title>Confirm Delete</AlertDialog.Title>
           <AlertDialog.Description>
-            Are you sure you want to delete this issue? This action can't be
-            undone.
+            Are you sure you want to delete this issue? This action can&apos;t
+            be undone.
           </AlertDialog.Description>
           <Flex mt="5" gap="2">
             <AlertDialog.Cancel>
@@ -59,7 +59,7 @@ const IssueDelete = async ({ issueId }: { issueId: number }) => {
         <AlertDialog.Content>
           <AlertDialog.Title>Error</AlertDialog.Title>
           <AlertDialog.Description>
-            This issue can't be deleted.
+            This issue can&apos;t be deleted.
           </AlertDialog.Description>
           <Button mt="4" onClick={() => setError(false)}>
             OK
