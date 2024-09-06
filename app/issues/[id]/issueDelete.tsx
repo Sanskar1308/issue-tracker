@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
-const IssueDelete = async ({ issueId }: { issueId: number }) => {
+const IssueDelete = async ({ issueId }: { issueId: string }) => {
   const [issubmittingDelete, setIssubmittingDelete] = useState(false);
   const [error, setError] = useState(false);
   const router = useRouter();

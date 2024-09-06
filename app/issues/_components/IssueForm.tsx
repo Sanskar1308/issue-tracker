@@ -109,7 +109,7 @@ function IssueForm({ issue }: { issue?: Issue }) {
           {issubmitting && <Spinner />}
         </Button>
       </form>
-      {issue && <IssueDelete issueId={parseInt(issue.id)} />}
+      {issue && <IssueDelete issueId={issue.id} />}
     </div>
   );
 }
