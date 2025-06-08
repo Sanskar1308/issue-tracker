@@ -49,6 +49,12 @@ function IssueForm({ issue }: { issue?: Issue }) {
     }
   });
 
+  const statusLabels: Record<string, string> = {
+    OPEN: "Open",
+    IN_PROGRESS: "In Progress",
+    CLOSED: "Closed",
+  };
+
   return (
     <div className="max-w-xl">
       {error && (
@@ -82,21 +88,19 @@ function IssueForm({ issue }: { issue?: Issue }) {
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
                   <Button variant="soft">
-                    {"Select Status"}
+                    {statusLabels[field.value as keyof typeof statusLabels] || "Select Status"}
                     <DropdownMenu.TriggerIcon />
                   </Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
                   <DropdownMenu.Item onSelect={() => field.onChange("OPEN")}>
-                    Open
+                    {statusLabels["OPEN"]}
                   </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    onSelect={() => field.onChange("IN_PROGRESS")}
-                  >
-                    In Progress
+                  <DropdownMenu.Item onSelect={() => field.onChange("IN_PROGRESS")}>
+                    {statusLabels["IN_PROGRESS"]}
                   </DropdownMenu.Item>
                   <DropdownMenu.Item onSelect={() => field.onChange("CLOSED")}>
-                    Closed
+                    {statusLabels["CLOSED"]}
                   </DropdownMenu.Item>
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
