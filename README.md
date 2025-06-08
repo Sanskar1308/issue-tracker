@@ -1,8 +1,30 @@
+https://anyissuetracker.netlify.app
 https://issue-tracker-nine-tau.vercel.app/
 
-visit this link to see live.
+Visit this link to see live.
 
-Can only visit and see all features.
-cann't signin as email must be whitelist to login by me.
-Edit, delete and assign issue buttons are hidden for not authorized or if there is not user login.
-Adding issue also require authentication.
+User can login with google account.
+User can add issue, edit issue, delete issue and assign issue to another user.
+User can see all issues and can see latest issues.
+User can see summary of issues and can see chart of issues.
+User can logout.
+
+Technologies used:
+- Next.js
+- React
+- Tailwind CSS
+- Prisma
+- NextAuth
+- React Hook Form
+- Zod
+- React Query
+- React Markdown
+- Recharts
+- EasyMDE
+- React Hot Toast
+- React Loading Skeleton
+- React Icons
+- Radix UI
+- Axios
+- Sentry
+- TypeScript
