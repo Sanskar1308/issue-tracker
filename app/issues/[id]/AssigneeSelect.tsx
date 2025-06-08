@@ -7,6 +7,10 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
+
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   const {
     data: users,
@@ -18,6 +22,8 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     staleTime: 60 * 1000,
     retry: 3,
   });
+
+  console.log(users);
 
   if (isLoading) return <SkeletonLoading height="35" rounded="5" />;
 
