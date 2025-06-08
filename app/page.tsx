@@ -5,6 +5,10 @@ import IssueChart from "./IssueChart";
 import IssueSummary from "./IssueSummary";
 import LastestIssues from "./LastestIssues";
 
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
+
 export default async function Home() {
   const open = await prisma.issue.count({ where: { status: "OPEN" } });
   const inProgress = await prisma.issue.count({
