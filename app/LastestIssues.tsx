@@ -3,20 +3,27 @@ import { Avatar, Card, Flex, Heading, Table } from "@radix-ui/themes";
 import Link from "next/link";
 import { IssueStatusBadge } from "./components";
 
-const LastestIssues = async () => {
+interface Props {
+  type: "createdAt" | "updatedAt";
+}
+
+const LastestIssues = async ({ type }: Props) => {
   const issues = await prisma.issue.findMany({
-    orderBy: { createdAt: "desc" },
+    orderBy: { [type]: "desc" },
     take: 5,
     include: {
       assignedToUser: true,
     },
   });
 
-  console.log(issues);
+  const getTitle = (type: string) => {
+    return type === "createdAt" ? "Latest Issues" : "Recently Updated Issues";
+  };
+
   return (
     <Card>
       <Heading size="4" mb="5">
-        Latest Issues
+        {getTitle(type)}
       </Heading>
       <Table.Root>
         <Table.Body>

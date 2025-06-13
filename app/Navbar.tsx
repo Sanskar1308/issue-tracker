@@ -74,8 +74,12 @@ const AuthDetails = () => {
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           <Avatar
-            src={session!.user!.image!}
-            fallback="?"
+            src={session?.user?.image || undefined}
+            fallback={
+              session?.user?.name?.[0]?.toUpperCase() || 
+              session?.user?.email?.[0]?.toUpperCase() || 
+              "U"
+            }
             size="2"
             radius="full"
             className="cursor-pointer"
@@ -83,7 +87,9 @@ const AuthDetails = () => {
           />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          <DropdownMenu.Label>{session!.user!.email}</DropdownMenu.Label>
+          <DropdownMenu.Label>
+            {session?.user?.email}
+          </DropdownMenu.Label>
           <DropdownMenu.Item>
             <Link href="/api/auth/signout">Logout</Link>
           </DropdownMenu.Item>
