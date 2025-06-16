@@ -1,8 +1,9 @@
+// app/(…)/issues/page.tsx
 import prisma from "@/prisma/client";
-import { Flex, Table } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import { IssueStatusBadge, Link } from "@/app/components";
 import IssueAction from "./IssueAction";
-import { Issue, Status } from "@prisma/client";
+import { Issue, Status, Prisma } from "@prisma/client";
 import NextLink from "next/link";
 import { FaArrowUp } from "react-icons/fa";
 import Pagination from "./Pagination";
@@ -14,26 +15,41 @@ interface Props {
 }
 
 async function issues({ searchParams }: Props) {
+  // ————— Filter by status —————
   const statuses = Object.values(Status);
   const status = statuses.includes(searchParams.status)
-    ? searchParams.status
+    ? (searchParams.status as Status)
     : undefined;
 
-  const orderBy = columnNames.includes(searchParams.orderBy)
-    ? { [searchParams.orderBy]: "asc" }
-    : undefined;
+  // ————— Determine sort column —————
+  const rawOrder = searchParams.orderBy;
+  type Column = typeof columnNames[number];
 
-  const page = parseInt(searchParams.page) || 1;
+  const orderByColumn: Column =
+    typeof rawOrder === "string" && columnNames.includes(rawOrder as Column)
+      ? (rawOrder as Column)
+      : "createdAt";
+
+  // ————— Build Prisma‐typed orderBy —————
+  const orderBy: Prisma.IssueOrderByWithRelationInput = {
+    [orderByColumn]: "desc",
+  };
+
+  // ————— Pagination —————
+  const page = parseInt(searchParams.page, 10) || 1;
   const pageSize = 10;
 
+  // ————— Fetch data —————
   const issues = await prisma.issue.findMany({
-    where: { status },
-    orderBy: orderBy,
-    skip: (page - 1) * pageSize,
-    take: pageSize,
+    where:   { status },
+    orderBy,   // ← always valid, defaults to createdAt desc
+    skip:    (page - 1) * pageSize,
+    take:    pageSize,
   });
 
   const issueCount = await prisma.issue.count({ where: { status } });
+
+  // ————— Render —————
   return (
     <Flex direction="column" gap="3">
       <IssueAction />
@@ -50,7 +66,7 @@ async function issues({ searchParams }: Props) {
 }
 
 export const metadata: Metadata = {
-  title: "Issue tracker- Issues Details",
+  title: "Issue tracker – Issues Details",
   description: "View all project issues",
 };
 
