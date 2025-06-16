@@ -1,17 +1,23 @@
 "use client";
 
-import { SkeletonLoading } from "@/app/components";
+import { useState } from "react";
+import { SkeletonLoading, Spinner } from "@/app/components";
 import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 export const revalidate = 0;
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
+  const [isSaving, setIsSaving] = useState(false);
+  const [selected, setSelected] = useState<string>(
+    issue.assignedToUserId ?? "none"
+  );
+
   const {
     data: users,
     error,
@@ -23,32 +29,52 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     retry: 3,
   });
 
-  console.log(users);
-
   if (isLoading) return <SkeletonLoading height="35" rounded="5" />;
-
   if (error) return null;
+
+  // find the display name for the currently selected user
+  const selectedUser = users?.find((u) => u.id === selected);
 
   return (
     <>
       <Select.Root
-        defaultValue={issue.assignedToUserId || "none"}
-        onValueChange={(userId) => {
-          axios
-            .patch("/api/issues/" + issue.id, {
+        value={selected}
+        onValueChange={async (userId) => {
+          setIsSaving(true);
+          try {
+            await axios.patch(`/api/issues/${issue.id}`, {
               assignedToUserId: userId === "none" ? null : userId,
-            })
-            .catch(() => {
-              toast.error("Unable to save the changes.");
             });
+            setSelected(userId);
+            toast.success("Assignment saved");
+          } catch {
+            toast.error("Unable to save the changes.");
+          } finally {
+            setIsSaving(false);
+          }
         }}
       >
-        <Select.Trigger placeholder="Assign..." />
+        <Select.Trigger
+          disabled={isSaving}
+          aria-label="Assign issue"
+          style={{ display: "flex", alignItems: "center", gap: 4 }}
+        >
+          {isSaving ? (
+            <SkeletonLoading />
+          ) : (
+            <span>
+              {selected === "none"
+                ? "Unassigned"
+                : selectedUser?.name ?? "Unknown"}
+            </span>
+          )}
+        </Select.Trigger>
+
         <Select.Content>
           <Select.Group>
-            <Select.Label>Suggetions</Select.Label>
+            <Select.Label>Suggestions</Select.Label>
             <Select.Item value="none">Unassigned</Select.Item>
-            {users?.map((user) => (
+            {users!.map((user) => (
               <Select.Item key={user.id} value={user.id}>
                 {user.name}
               </Select.Item>
